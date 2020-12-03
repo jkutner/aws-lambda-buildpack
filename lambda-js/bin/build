@@ -19,7 +19,7 @@ runtime_layer=$layers_dir/runtime
 ric_version="1.0.0"
 
 echo ""
-echo "[Lambda Runtime Interface Client for Node.js]"
+echo "[AWS Lambda Runtime Interface Client for Node.js]"
 
 if [ -f ${runtime_layer}.toml ] && [ "$(cat "${runtime_layer}.toml" | yj -t | jq .metadata.version -r)" == "${ric_version}" ]; then
   echo "Using cached version: ${ric_version}"

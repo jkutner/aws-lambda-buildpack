@@ -48,7 +48,7 @@ $ aws ecr get-login-password | docker login --username AWS --password-stdin <ima
 $ docker push <image-repo>/my-lambda:latest
 ```
 
-The create the Lambda and a Trigger via the AWS Console.
+Then create the Lambda and a Trigger via the AWS Console.
 
 ## Packaging the Buildpack
 

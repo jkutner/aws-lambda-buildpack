@@ -1,14 +1,5 @@
-#!/bin/sh
+#!/bin/bash
 # Copyright 2019 Amazon.com, Inc. or its affiliates. All Rights Reserved.
-
-if [ -z "$NODE_PATH" ];
-then
-  nodejs_mods="/opt/nodejs/node_modules"
-  nodejs12_mods="/opt/nodejs/node12/node_modules"
-  runtime_mods="/var/runtime/node_modules"
-  task="/var/runtime:/var/task"
-  export NODE_PATH="$nodejs12_mods:$nodejs_mods:$runtime_mods:$task"
-fi
 
 if [ -n "$AWS_LAMBDA_FUNCTION_MEMORY_SIZE" ];
 then
@@ -16,8 +7,8 @@ then
   semi_space=$(expr $new_space / 2)
   old_space=$(expr $AWS_LAMBDA_FUNCTION_MEMORY_SIZE - $new_space)
   MEMORY_ARGS=(
-    "--max-semi-space-size=$semi_space"
-    "--max-old-space-size=$old_space"
+    "--node-arg=--max-semi-space-size=$semi_space"
+    "--node-arg=--max-old-space-size=$old_space"
   )
 fi
 
@@ -28,14 +19,13 @@ fi
 export AWS_EXECUTION_ENV=AWS_Lambda_nodejs12.x
 
 NODE_ARGS=(
-    --expose-gc
-    --max-http-header-size 81920
+    --node-arg=--expose-gc
+    --node-arg=--max-http-header-size=81920
     "${MEMORY_ARGS[@]}"
-    /var/runtime/index.js
     )
 
 if [ -z "$AWS_LAMBDA_EXEC_WRAPPER" ]; then
-  exec node "${NODE_ARGS[@]}"
+  exec npx "${NODE_ARGS[@]}" aws-lambda-ric app.handler
 else
   wrapper="$AWS_LAMBDA_EXEC_WRAPPER"
   if [ ! -f "$wrapper" ]; then
@@ -46,5 +36,5 @@ else
     echo "$wrapper: is not an executable"
     exit 126
   fi
-    exec -- "$wrapper" node "${NODE_ARGS[@]}"
+    exec -- "$wrapper" npx "${NODE_ARGS[@]}" aws-lambda-ric app.handler
 fi

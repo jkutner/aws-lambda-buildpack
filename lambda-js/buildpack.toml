@@ -7,3 +7,6 @@ name = "AWS Lambda JS Buildpack"
 
 [[stacks]]
 id = "heroku-18"
+
+[[stacks]]
+id = "io.buildpacks.stacks.bionic"

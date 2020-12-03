@@ -1,0 +1,3 @@
+FROM heroku/pack:18-build
+
+LABEL io.buildpacks.stack.id="io.buildpacks.stacks.bionic"

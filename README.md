@@ -62,7 +62,7 @@ This will create a `jkutner/lambda-cnb` image containing the buildpack.
 
 ## Using the Heroku Stack
 
-By default, the this repo is setup to use the `jkutner/pack:18-tiny` image, which is _NOT_ production ready.
+By default, the this repo is setup to use the `jkutner/lambda:18-tiny` image, which is _NOT_ production ready.
 
 If you would prefer to ship a more secure and full-featured image run-image (but also larger), you can use the [Heroku stack image](https://devcenter.heroku.com/articles/stack) by using the `heroku/buildpacks:18` builder image:
 

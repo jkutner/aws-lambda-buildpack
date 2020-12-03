@@ -1,7 +1,7 @@
 [stack]
 id = "io.buildpacks.stacks.bionic"
-build-image = "jkutner/pack:18-build"
-run-image = "jkutner/pack:18-tiny"
+build-image = "jkutner/lambda:18-build"
+run-image = "jkutner/lambda:18-tiny"
 
 [[buildpacks]]
   id = "jkutner/lambda"

@@ -12,7 +12,11 @@ if compgen -G "${env_dir}/*" > /dev/null; then
   done
 fi
 
-echo "[lambda]"
+# install runtime
+runtime_layer=$layers_dir/runtime
+mkdir -p $runtime_layer
+echo "Installing Lambda Runtime Interface Client for Node.js"
+npm install aws-lambda-ric npx --save
 
 # install emulator
 rie_layer=$layers_dir/rie
@@ -21,42 +25,30 @@ echo "Installing Lambda Emulator"
 curl -sL --retry 3 \
   "https://github.com/aws/aws-lambda-base-images/raw/nodejs12.x/4ed7d8fa551de49733288f1d275a1edda8627f4488cd9a5d9b2ec439ce9372ca.tar.xz" \
   | tar xJ -C $rie_layer/
-
-mkdir -p $rie_layer/profile.d/
-echo ""
 echo "launch = true" > ${rie_layer}.toml
 echo "cache = true" >> ${rie_layer}.toml
 
-# install runtime
-runtime_layer=$layers_dir/runtime
-mkdir -p $runtime_layer
-echo "Installing Lambda Runtime"
-curl -sL --retry 3 \
-  "https://github.com/aws/aws-lambda-base-images/raw/nodejs12.x/d16b19b082caafeeb8833563bd2e0bef2cc93d0617d72e533c003da3806fdfb1.tar.xz" \
-  | tar xJ -C $runtime_layer/
-find $runtime_layer/var/runtime/ -type f -exec sed -i 's|/var/runtime|'$runtime_layer'/var/runtime|g' {} \;
-# sed -i 's|/var/runtime|'$runtime_layer'/var/runtime|g' $runtime_layer/var/runtime/bootstrap
-sed -i 's|/var/lang/bin/node|node|g' $runtime_layer/var/runtime/bootstrap
-sed -i 's|/bin/sh|/bin/bash|g' $runtime_layer/var/runtime/bootstrap
-ln -s $runtime_layer/var/runtime/bootstrap bootstrap
-echo "launch = true" > ${runtime_layer}.toml
-echo "cache = true" >> ${runtime_layer}.toml
-
-# cd $runtime_layer/var/runtime/
-# rm -rf node_modules
-# npm install aws-sdk
-# cd -
 
 # install entrypoint
 entrypoint_layer=$layers_dir/entrypoint
-mkdir -p $entrypoint_layer
+mkdir -p $entrypoint_layer/bin
 echo "Installing Lambda Entrypoint"
 
-curl -sL --retry 3 \
-  "https://github.com/aws/aws-lambda-base-images/raw/nodejs12.x/2a78d7729a93f3a39cfe526823babc90e1fb5a3de400bb97e593f12d6ab626bf.tar.xz" \
-  | tar xJ -C $entrypoint_layer/
-sed -i 's|/usr|'$rie_layer'/usr|g' $entrypoint_layer/lambda-entrypoint.sh
-sed -i 's|/var/runtime|'$runtime_layer'/var/runtime|g' $entrypoint_layer/lambda-entrypoint.sh
+cat <<EOF > ${entrypoint_layer}/bin/lambda
+if [ \$# -ne 1 ]; then
+  echo "entrypoint requires the handler name to be the first argument" 1>&2
+  exit 142
+fi
+export _HANDLER="\$1"
+
+RUNTIME_ENTRYPOINT="npx aws-lambda-ric \$_HANDLER"
+if [ -z "\${AWS_LAMBDA_RUNTIME_API}" ]; then
+  exec ${rie_layer}/usr/local/bin/aws-lambda-rie \$RUNTIME_ENTRYPOINT
+else
+  exec \$RUNTIME_ENTRYPOINT
+fi
+EOF
+chmod +x ${entrypoint_layer}/bin/lambda
 echo "launch = true" > ${entrypoint_layer}.toml
 echo "cache = true" >> ${entrypoint_layer}.toml
 
@@ -64,5 +56,9 @@ echo "cache = true" >> ${entrypoint_layer}.toml
 cat <<EOF > ${layers_dir}/launch.toml
 [[processes]]
 type = "web"
-command = "${entrypoint_layer}/lambda-entrypoint.sh app.lambdaHandler"
+command = "lambda app.handler"
+
+[[processes]]
+type = "bash"
+command = "/bin/bash"
 EOF

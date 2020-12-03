@@ -12,13 +12,17 @@ if compgen -G "${env_dir}/*" > /dev/null; then
   done
 fi
 
+######################
 # install runtime
+######################
 runtime_layer=$layers_dir/runtime
 mkdir -p $runtime_layer
 echo "Installing Lambda Runtime Interface Client for Node.js"
 npm install aws-lambda-ric npx --save
 
+######################
 # install emulator
+######################
 rie_layer=$layers_dir/rie
 mkdir -p $rie_layer
 echo "Installing Lambda Emulator"
@@ -28,8 +32,9 @@ curl -sL --retry 3 \
 echo "launch = true" > ${rie_layer}.toml
 echo "cache = true" >> ${rie_layer}.toml
 
-
+######################
 # install entrypoint
+######################
 entrypoint_layer=$layers_dir/entrypoint
 mkdir -p $entrypoint_layer/bin
 echo "Installing Lambda Entrypoint"
@@ -52,7 +57,6 @@ chmod +x ${entrypoint_layer}/bin/lambda
 echo "launch = true" > ${entrypoint_layer}.toml
 echo "cache = true" >> ${entrypoint_layer}.toml
 
-# create launch.toml
 cat <<EOF > ${layers_dir}/launch.toml
 [[processes]]
 type = "web"

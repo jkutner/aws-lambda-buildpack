@@ -12,13 +12,12 @@ then
   )
 fi
 
-if [[ $AWS_DEFAULT_REGION == us-iso* ]]
-then export NODE_EXTRA_CA_CERTS="/etc/pki/tls/certs/ca-bundle.crt"
-fi
-
-export AWS_EXECUTION_ENV=AWS_Lambda_nodejs12.x
+# if [[ $AWS_DEFAULT_REGION == us-iso* ]]
+# then export NODE_EXTRA_CA_CERTS="/etc/pki/tls/certs/ca-bundle.crt"
+# fi
 
 NODE_ARGS=(
+    --no-install
     --node-arg=--expose-gc
     --node-arg=--max-http-header-size=81920
     "${MEMORY_ARGS[@]}"

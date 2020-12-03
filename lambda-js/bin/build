@@ -29,7 +29,7 @@ else
   mkdir -p $runtime_layer/env
   npm install --prefix $runtime_layer aws-lambda-ric@${ric_version} --save
 
-  echo "$runtime_layer/node_modules" > $runtime_layer/env/NODE_PATH
+  echo -n "$runtime_layer/node_modules" > $runtime_layer/env/NODE_PATH
 
   cat <<TOML > ${runtime_layer}.toml
 launch = true

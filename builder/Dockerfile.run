@@ -3,6 +3,8 @@ FROM ubuntu:bionic
 RUN apt-get update -y
 RUN apt-get install librtmp1 libldap-2.4-2 -y
 
+RUN ln -s /workspace /app
+
 ARG pack_uid=1000
 ARG pack_gid=1000
 
@@ -10,5 +12,6 @@ RUN groupadd heroku --gid ${pack_gid} && \
   useradd heroku -u ${pack_uid} -g ${pack_gid} -s /bin/bash -m
 
 LABEL io.buildpacks.stack.id="io.buildpacks.stacks.bionic"
+ENV STACK heroku-18
 USER heroku
 ENV HOME /app

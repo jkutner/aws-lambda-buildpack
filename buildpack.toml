@@ -15,11 +15,6 @@ name = "AWS Lambda Buildpack"
     version = "0.4.0"
 
   [[order.group]]
-    id = "heroku/procfile"
-    version = "0.6"
-    optional = true
-
-  [[order.group]]
     id = "jkutner/lambda-js"
     version = "0.1.0"
     optional = true

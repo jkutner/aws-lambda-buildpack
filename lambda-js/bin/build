@@ -39,30 +39,68 @@ entrypoint_layer=$layers_dir/entrypoint
 mkdir -p $entrypoint_layer/bin
 echo "Installing Lambda Entrypoint"
 
-cat <<EOF > ${entrypoint_layer}/bin/lambda
-if [ \$# -ne 1 ]; then
-  echo "entrypoint requires the handler name to be the first argument" 1>&2
-  exit 142
-fi
-export _HANDLER="\$1"
+cat <<EOF > ${entrypoint_layer}/bin/lambda-entrypoint
+#!/bin/bash
 
-RUNTIME_ENTRYPOINT="npx aws-lambda-ric \$_HANDLER"
+RUNTIME_ENTRYPOINT="./bootstrap"
 if [ -z "\${AWS_LAMBDA_RUNTIME_API}" ]; then
   exec ${rie_layer}/usr/local/bin/aws-lambda-rie \$RUNTIME_ENTRYPOINT
 else
   exec \$RUNTIME_ENTRYPOINT
 fi
 EOF
-chmod +x ${entrypoint_layer}/bin/lambda
+chmod +x ${entrypoint_layer}/bin/lambda-entrypoint
 echo "launch = true" > ${entrypoint_layer}.toml
 echo "cache = true" >> ${entrypoint_layer}.toml
 
 cat <<EOF > ${layers_dir}/launch.toml
 [[processes]]
 type = "web"
-command = "lambda app.handler"
+command = "lambda-entrypoint"
 
 [[processes]]
 type = "bash"
 command = "/bin/bash"
 EOF
+
+######################
+# install bootstrap
+######################
+cat <<EOF > bootstrap
+#!/bin/bash
+
+if [ -n "\$AWS_LAMBDA_FUNCTION_MEMORY_SIZE" ];
+then
+  new_space=\$(expr \$AWS_LAMBDA_FUNCTION_MEMORY_SIZE / 10)
+  semi_space=\$(expr \$new_space / 2)
+  old_space=\$(expr \$AWS_LAMBDA_FUNCTION_MEMORY_SIZE - \$new_space)
+  MEMORY_ARGS=(
+    "--node-arg=--max-semi-space-size=\$semi_space"
+    "--node-arg=--max-old-space-size=\$old_space"
+  )
+fi
+
+export AWS_EXECUTION_ENV=AWS_Lambda_nodejs12.x
+
+NODE_ARGS=(
+    --node-arg=--expose-gc
+    --node-arg=--max-http-header-size=81920
+    "\${MEMORY_ARGS[@]}"
+    )
+
+if [ -z "\$AWS_LAMBDA_EXEC_WRAPPER" ]; then
+  exec $(which npx) aws-lambda-ric app.handler
+else
+  wrapper="\$AWS_LAMBDA_EXEC_WRAPPER"
+  if [ ! -f "\$wrapper" ]; then
+    echo "\$wrapper: does not exist"
+    exit 127
+  fi
+  if [ ! -x "\$wrapper" ]; then
+    echo "\$wrapper: is not an executable"
+    exit 126
+  fi
+  exec -- "\$wrapper" $(which npx) aws-lambda-ric app.handler
+fi
+EOF
+chmod +x bootstrap

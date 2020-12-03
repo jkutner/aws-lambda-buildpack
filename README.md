@@ -16,7 +16,7 @@ Create a function by adding the following code to an `app.js` file:
 "use strict";
 
 exports.handler = async (event, context) => {
-    return 'Hello World!';
+    return '{"message": "Hello World!"}';
 }
 ```
 
@@ -31,6 +31,21 @@ Run the buildpack:
 ```sh-session
 $ pack build --buildpack jkutner/lambda my-lambda
 ```
+
+Run it locally:
+
+```sh-session
+$ docker run -p 9000:8080 my-lambda
+```
+
+And test it:
+
+```sh-session
+$ curl -XPOST "http://localhost:9000/2015-03-31/functions/function/invocations" -d '{}'
+"Hello World!"
+```
+
+Then create a lambda and deploy following the [AWS Lambda guide to Container Image Support](https://aws.amazon.com/blogs/aws/new-for-aws-lambda-container-image-support/).
 
 ## License
 

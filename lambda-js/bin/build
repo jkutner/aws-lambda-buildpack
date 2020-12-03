@@ -18,19 +18,27 @@ fi
 runtime_layer=$layers_dir/runtime
 mkdir -p $runtime_layer
 echo "Installing Lambda Runtime Interface Client for Node.js"
+
+# TODO need to cache these some how
 npm install aws-lambda-ric npx --save
+
+echo "$runtime_layer" > $runtime_layer/env/NODE_PATH
 
 ######################
 # install emulator
 ######################
+
+# The version of https://github.com/aws/aws-lambda-base-images/tree/nodejs12.x
+base_sha="7411b1a0ea52fd1cdca24bb089b653c646946da8"
+layer_sha="dc3f98662c3ce8a51a7a5c01bf9a57b51744bb5c5b7a57db096b62dc6e90386c"
+
 rie_layer=$layers_dir/rie
 mkdir -p $rie_layer
 echo "Installing Lambda Emulator"
 curl -sL --retry 3 \
-  "https://github.com/aws/aws-lambda-base-images/raw/nodejs12.x/4ed7d8fa551de49733288f1d275a1edda8627f4488cd9a5d9b2ec439ce9372ca.tar.xz" \
+  "https://github.com/aws/aws-lambda-base-images/raw/${base_sha}/${layer_sha}.tar.xz" \
   | tar xJ -C $rie_layer/
 echo "launch = true" > ${rie_layer}.toml
-echo "cache = true" >> ${rie_layer}.toml
 
 ######################
 # install entrypoint

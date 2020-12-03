@@ -3,7 +3,7 @@ api = "0.2"
 [buildpack]
 id = "jkutner/lambda"
 version = "0.1.0"
-name = "Lambda Buildpack"
+name = "AWS Lambda Buildpack"
 
 [[order]]
   [[order.group]]

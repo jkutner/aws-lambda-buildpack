@@ -3,7 +3,7 @@ api = "0.2"
 [buildpack]
 id = "jkutner/lambda-js"
 version = "0.1.0"
-name = "Lambda JS Buildpack"
+name = "AWS Lambda JS Buildpack"
 
 [[stacks]]
 id = "heroku-18"

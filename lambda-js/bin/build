@@ -27,7 +27,7 @@ if [ -f ${runtime_layer}.toml ] && [ "$(cat "${runtime_layer}.toml" | yj -t | jq
 else
   echo "Installing version: ${ric_version}"
   mkdir -p $runtime_layer/env
-  npm install --prefix $runtime_layer aws-lambda-ric@${ric_version} --save
+  npm install --prefix $runtime_layer aws-lambda-ric@${ric_version}
 
   echo -n "$runtime_layer/node_modules" > $runtime_layer/env/NODE_PATH
 
@@ -39,6 +39,9 @@ cache = true
 version = "${ric_version}"
 TOML
 fi
+
+echo "Installing to node_modules"
+npm install --ignore-scripts "$runtime_layer/node_modules/aws-lambda-ric"
 
 ######################
 # install emulator

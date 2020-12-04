@@ -1,0 +1,48 @@
+name: Buildpackage
+on:
+    release:
+        types:
+            - published
+jobs:
+    create-package:
+        name: Package, Publish, and Register
+        runs-on:
+            - ubuntu-latest
+        steps:
+            - id: checkout
+              name: Checkout code
+              uses: actions/checkout@v2
+            - if: ${{ github.event_name != 'pull_request' || ! github.event.pull_request.head.repo.fork }}
+              name: Login to GitHub Package Registry
+              uses: docker/login-action@v1
+              with:
+                registry: ghcr.io
+                username: ${{ github.repository_owner }}
+                password: ${{ secrets.GHCR_TOKEN }}
+            - id: setup-pack
+              name: Package Buildpack
+              uses: buildpacks/github-actions@pack-beta
+              with:
+                version: "0.15.1"
+            - id: package
+              run: |
+                #!/usr/bin/env bash
+                set -euo pipefail
+
+                VERSION="$(cat buildpack.toml | yj -t | jq -r .buildpack.version)"
+                pack package-buildpack --config package.toml --publish ${PACKAGE}:${VERSION}
+                DIGEST="$(crane digest ${PACKAGE}:${VERSION})"
+
+                echo "::set-output name=version::$VERSION"
+                echo "::set-output name=digest::$DIGEST"
+              shell: bash
+              env:
+                PACKAGE: ghcr.io/${{ github.repository_owner }}/buildpacks/jkutner_lambda
+            - id: register
+              name: Register Buildpack
+              uses: docker://ghcr.io/buildpacks/actions/registry:main
+              with:
+                token:   ${{ secrets.PUBLIC_REPO_TOKEN }}
+                id:      jkutner/lambda
+                version: ${{ steps.package.outputs.version }}
+                address: ghcr.io/jkutner/buildpacks/lambda@${{ steps.package.outputs.digest }}

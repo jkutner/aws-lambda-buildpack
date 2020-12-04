@@ -1,6 +1,6 @@
 # AWS Lambda Buildpack
 
-A Cloud Native Buildpack for AWS Lambda
+A [Cloud Native Buildpack](https://buildpacks.io) for [AWS Lambda](https://aws.amazon.com/lambda/)
 
 ## Usage
 

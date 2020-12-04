@@ -27,6 +27,8 @@ $ pack trust-builder jkutner/aws-lambda-builder:18
 $ pack build --builder jkutner/aws-lambda-builder:18 my-lambda
 ```
 
+(**note:** you can also [use the Heroku builder](#using-the-heroku-stack) if you need additional system packages. Try this if you write a more elaborate function and you get an error at runtime)
+
 Run your lambda image locally:
 
 ```sh-session

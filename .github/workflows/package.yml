@@ -37,12 +37,12 @@ jobs:
                 echo "::set-output name=digest::$DIGEST"
               shell: bash
               env:
-                PACKAGE: ghcr.io/${{ github.repository_owner }}/buildpacks/jkutner_lambda
+                PACKAGE: ghcr.io/${{ github.repository_owner }}/buildpacks/jkutner_aws-lambda
             - id: register
               name: Register Buildpack
               uses: docker://ghcr.io/buildpacks/actions/registry:main
               with:
                 token:   ${{ secrets.PUBLIC_REPO_TOKEN }}
-                id:      jkutner/lambda
+                id:      jkutner/aws-lambda
                 version: ${{ steps.package.outputs.version }}
-                address: ghcr.io/jkutner/buildpacks/lambda@${{ steps.package.outputs.digest }}
+                address: ghcr.io/jkutner/buildpacks/aws-lambda@${{ steps.package.outputs.digest }}

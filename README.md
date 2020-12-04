@@ -23,8 +23,8 @@ $ npm init
 Install the [Pack CLI](https://buildpacks.io/docs/tools/pack/) and run the buildpack:
 
 ```sh-session
-$ pack trust-builder jkutner/lambda-builder:18
-$ pack build --builder jkutner/lambda-builder:18 my-lambda
+$ pack trust-builder jkutner/aws-lambda-builder:18
+$ pack build --builder jkutner/aws-lambda-builder:18 my-lambda
 ```
 
 Run your lambda image locally:
@@ -53,22 +53,22 @@ Then create the Lambda and a Trigger via the AWS Console.
 
 ## Packaging the Buildpack
 
-If you want to work with the buildpack independently of the `jkutner/lambda-builder`, run the following command:
+If you want to work with the buildpack independently of the `jkutner/aws-lambda-builder`, run the following command:
 
 ```
 $ make create-buildpack
 ```
 
-This will create a `jkutner/lambda-cnb` image containing the buildpack.
+This will create a `jkutner/aws-lambda-cnb` image containing the buildpack.
 
 ## Using the Heroku Stack
 
-By default, this repo is setup to use the `jkutner/lambda:18-tiny` image, which is _NOT_ production ready.
+By default, this repo is setup to use the `jkutner/aws-lambda:18-tiny` image, which is _NOT_ production ready.
 
 If you would prefer to ship a more secure and full-featured run-image (but also larger), you can use the [Heroku stack image](https://devcenter.heroku.com/articles/stack) by using the `heroku/buildpacks:18` builder image:
 
 ```
-$ pack build --builder heroku/buildpacks:18 --buildpack jkutner/lambda my-lambda
+$ pack build --builder heroku/buildpacks:18 --buildpack jkutner/aws-lambda my-lambda
 ```
 
 ## License

@@ -1,7 +1,7 @@
 api = "0.3"
 
 [buildpack]
-id = "jkutner/lambda-js"
+id = "jkutner/aws-lambda-js"
 version = "0.1.0"
 name = "AWS Lambda JS Buildpack"
 

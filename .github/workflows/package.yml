@@ -45,4 +45,4 @@ jobs:
                 token:   ${{ secrets.PUBLIC_REPO_TOKEN }}
                 id:      jkutner/aws-lambda
                 version: ${{ steps.package.outputs.version }}
-                address: ghcr.io/jkutner/buildpacks/aws-lambda@${{ steps.package.outputs.digest }}
+                address: ghcr.io/jkutner/buildpacks/jkutner_aws-lambda@${{ steps.package.outputs.digest }}

@@ -53,7 +53,7 @@ Then create the Lambda and a Trigger via the AWS Console.
 
 ## Packaging the Buildpack
 
-Run the following command:
+If you want to work with the buildpack independently of the `jkutner/lambda-builder`, run the following command:
 
 ```
 $ make create-buildpack

@@ -24,7 +24,7 @@ NODE_ARGS=(
     )
 
 if [ -z "$AWS_LAMBDA_EXEC_WRAPPER" ]; then
-  exec npx "${NODE_ARGS[@]}" aws-lambda-ric app.handler
+  exec npx "${NODE_ARGS[@]}" aws-lambda-ric "${1}"
 else
   wrapper="$AWS_LAMBDA_EXEC_WRAPPER"
   if [ ! -f "$wrapper" ]; then
@@ -35,5 +35,5 @@ else
     echo "$wrapper: is not an executable"
     exit 126
   fi
-    exec -- "$wrapper" npx "${NODE_ARGS[@]}" aws-lambda-ric app.handler
+    exec -- "$wrapper" npx "${NODE_ARGS[@]}" aws-lambda-ric "${1}"
 fi

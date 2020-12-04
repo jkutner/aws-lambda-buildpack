@@ -51,15 +51,13 @@ $ docker push <image-repo>/my-lambda:latest
 
 Then create the Lambda and a Trigger via the AWS Console.
 
+## Customizing the Handler
+
+By default, the buildpack will try to execute a handler named `app.handler` (matching the `exports.handler` in `app.js`). You can customize this by setting the `HANDLER` environment variable (ex. `docker run -e HANDLER="foo.bar" ...`). Or you can add a `Procfile` to repo to completely override the launch process.
+
 ## Packaging the Buildpack
 
-If you want to work with the buildpack independently of the `jkutner/aws-lambda-builder`, run the following command:
-
-```
-$ make create-buildpack
-```
-
-This will create a `jkutner/aws-lambda-cnb` image containing the buildpack.
+If you want to work with the buildpack independent of the `jkutner/aws-lambda-builder` image, run `make create-buildpack` to package a `jkutner/aws-lambda-cnb` image containing the buildpack.
 
 ## Using the Heroku Stack
 

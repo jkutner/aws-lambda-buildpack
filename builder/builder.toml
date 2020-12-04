@@ -3,6 +3,9 @@ id = "io.buildpacks.stacks.bionic"
 build-image = "jkutner/lambda:18-build"
 run-image = "jkutner/lambda:18-tiny"
 
+[lifecycle]
+version = "0.9.3"
+
 [[buildpacks]]
   id = "jkutner/lambda"
   uri = "docker://jkutner/lambda-cnb:latest"

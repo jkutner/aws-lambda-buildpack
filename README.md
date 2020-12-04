@@ -23,6 +23,7 @@ $ npm init
 Install the [Pack CLI](https://buildpacks.io/docs/tools/pack/) and run the buildpack:
 
 ```sh-session
+$ pack trust-builder jkutner/lambda-builder:18
 $ pack build --builder jkutner/lambda-builder:18 my-lambda
 ```
 

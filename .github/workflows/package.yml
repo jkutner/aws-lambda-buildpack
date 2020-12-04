@@ -21,7 +21,7 @@ jobs:
                 password: ${{ secrets.GHCR_TOKEN }}
             - id: setup-pack
               name: Package Buildpack
-              uses: buildpacks/github-actions/setup-pack
+              uses: buildpacks/github-actions/setup-pack@v3.1.0
               with:
                 pack-version: "0.15.1"
             - id: package

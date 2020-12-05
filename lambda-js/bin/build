@@ -88,7 +88,7 @@ echo "Installing entrypoint script"
 cat <<EOF > ${entrypoint_layer}/bin/lambda-entrypoint
 #!/bin/bash
 
-RUNTIME_ENTRYPOINT="./bootstrap \${HANDLER:-app.handler}"
+RUNTIME_ENTRYPOINT="./bootstrap \${HANDLER:-index.handler}"
 if [ -z "\${AWS_LAMBDA_RUNTIME_API}" ]; then
   exec ${rie_layer}/usr/local/bin/aws-lambda-rie \$RUNTIME_ENTRYPOINT
 else

@@ -1,10 +1,12 @@
 # AWS Lambda Buildpack
 
+![CI](https://github.com/jkutner/aws-lambda-cnb/workflows/ci/badge.svg?branch=master&event=push)
+
 A [Cloud Native Buildpack](https://buildpacks.io) for [AWS Lambda](https://aws.amazon.com/lambda/)
 
 ## Usage
 
-Create a function by adding the following code to an `app.js` file:
+Create a function by adding the following code to an `index.js` file:
 
 ```js
 "use strict";
@@ -55,7 +57,7 @@ Then create the Lambda and a Trigger via the AWS Console.
 
 ## Customizing
 
-By default, the buildpack will try to execute a handler named `app.handler` (matching the `exports.handler` in `app.js`). You can customize this by setting the `HANDLER` environment variable (ex. `docker run -e HANDLER="foo.bar" ...`). Or you can add a `Procfile` to the repo to completely override the launch process.
+By default, the buildpack will try to execute a handler named `index.handler` (matching the `exports.handler` in `index.js`). You can customize this by setting the `HANDLER` environment variable (ex. `docker run -e HANDLER="foo.bar" ...`). Or you can add a `Procfile` to the repo to completely override the launch process.
 
 Follow the [Heroku Node.js Support guide](https://devcenter.heroku.com/articles/nodejs-support) for information on customizing the Node.js and NPM environments.
 

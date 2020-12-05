@@ -13,7 +13,7 @@ jobs:
         steps:
             - uses: actions/checkout@v2
             - name: Setup Pack
-              uses: buildpacks/github-actions/setup-pack:v3.0.1
+              uses: buildpacks/github-actions/setup-pack@v3.0.1
             - name: Create Buildpack
               run: |
                 #!/usr/bin/env bash

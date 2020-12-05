@@ -1,0 +1,27 @@
+name: Smoke Tests
+"on":
+    pull_request: {}
+    push:
+        branches:
+            - master
+
+jobs:
+    unit:
+        name: JS Smoke Test
+        runs-on:
+            - ubuntu-latest
+        steps:
+            - uses: actions/checkout@v2
+            - name: Setup Pack
+              uses: buildpacks/github-actions@pack-beta
+            - name: Create Buildpack
+              run: |
+                #!/usr/bin/env bash
+                set -euo pipefail
+                make create
+            - name: Run Tests
+              run: |
+                #!/usr/bin/env bash
+                set -euo pipefail
+                cd test
+                bash hello-world-js.sh

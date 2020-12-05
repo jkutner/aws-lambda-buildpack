@@ -1,6 +1,6 @@
 # AWS Lambda Buildpack
 
-![CI](https://github.com/jkutner/aws-lambda-cnb/workflows/ci/badge.svg?branch=master&event=push)
+![CI](https://github.com/jkutner/aws-lambda-cnb/workflows/CI/badge.svg?branch=master&event=push)
 
 A [Cloud Native Buildpack](https://buildpacks.io) for [AWS Lambda](https://aws.amazon.com/lambda/)
 

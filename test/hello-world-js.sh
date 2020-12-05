@@ -18,12 +18,21 @@ confirm_output() {
 
 echo "=== TEST jkutner/aws-lambda-builder:18"
 pack trust-builder jkutner/aws-lambda-builder:18
-pack build --clear-cache --builder jkutner/aws-lambda-builder:18 hello-world-js --path fixtures/hello-world-js --pull-policy if-not-present
+pack build --clear-cache \
+  --builder jkutner/aws-lambda-builder:18 \
+  --path fixtures/hello-world-js \
+  --pull-policy=if-not-present \
+  hello-world-js
 confirm_output
 echo "SUCCESS"
 
 echo "=== TEST heroku/buildpacks:18"
 docker pull heroku/buildpacks:18
-pack build --clear-cache --builder heroku/buildpacks:18 --buildpack jkutner/aws-lambda-cnb hello-world-js --path fixtures/hello-world-js --pull-policy if-not-present
+pack build --clear-cache \
+  --builder heroku/buildpacks:18 \
+  --buildpack jkutner/aws-lambda-cnb \
+  --path fixtures/hello-world-js \
+  --pull-policy=if-not-present \
+  hello-world-js
 confirm_output
 echo "SUCCESS"

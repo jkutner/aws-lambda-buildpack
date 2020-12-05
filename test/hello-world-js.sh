@@ -13,6 +13,7 @@ confirm_output() {
   fi
 
   docker ps -aq | xargs docker kill
+  return 0
 }
 
 echo "=== TEST jkutner/aws-lambda-builder:18"
@@ -29,7 +30,7 @@ echo "=== TEST heroku/buildpacks:18"
 docker pull heroku/buildpacks:18
 pack build --clear-cache \
   --builder heroku/buildpacks:18 \
-  --buildpack jkutner/aws-lambda-cnb \
+  --buildpack docker://jkutner/aws-lambda-cnb:latest \
   --path fixtures/hello-world-js \
   --pull-policy="if-not-present" \
   "hello-world-js"

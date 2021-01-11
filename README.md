@@ -25,8 +25,7 @@ $ npm init
 Install the [Pack CLI](https://buildpacks.io/docs/tools/pack/) and run the buildpack:
 
 ```sh-session
-$ pack trust-builder jkutner/aws-lambda-builder:18
-$ pack build --builder jkutner/aws-lambda-builder:18 my-lambda
+$ pack build --builder jkutner/aws-lambda-builder:18 --trust-builder my-lambda
 ```
 
 (**note:** you can also [use the Heroku builder](#using-the-heroku-stack) if you need additional system packages. Try this if you write a more elaborate function and you get an error at runtime)

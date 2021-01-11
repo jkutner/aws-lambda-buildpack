@@ -33,7 +33,7 @@ $ pack build --builder jkutner/aws-lambda-builder:18 --trust-builder my-lambda
 Run your lambda image locally:
 
 ```sh-session
-$ docker run -p 9000:8080 my-lambda
+$ docker run -p 9000:9000 my-lambda
 ```
 
 And test it:

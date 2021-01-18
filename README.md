@@ -1,6 +1,6 @@
 # AWS Lambda Buildpack
 
-![CI](https://github.com/jkutner/aws-lambda-cnb/workflows/CI/badge.svg?branch=master&event=push)
+![CI](https://github.com/jkutner/aws-lambda-cnb/workflows/CI/badge.svg?branch=master&event=push) ![Version](https://img.shields.io/badge/dynamic/json?url=https://cnb-registry-api.herokuapp.com/api/v1/buildpacks/jkutner/aws-lambda&label=Version&query=$.latest.version)
 
 A [Cloud Native Buildpack](https://buildpacks.io) for [AWS Lambda](https://aws.amazon.com/lambda/)
 

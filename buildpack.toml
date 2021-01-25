@@ -4,6 +4,11 @@ api = "0.3"
 id = "jkutner/aws-lambda"
 version = "0.1.0"
 name = "AWS Lambda Buildpack"
+homepage = "https://github.com/jkutner/aws-lambda-buildpack"
+keywords = [ "aws", "lambda" ]
+
+[[licenses]]
+type = "MIT"
 
 [[order]]
   [[order.group]]

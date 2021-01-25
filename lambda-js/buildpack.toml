@@ -4,6 +4,11 @@ api = "0.3"
 id = "jkutner/aws-lambda-js"
 version = "0.1.0"
 name = "AWS Lambda JS Buildpack"
+homepage = "https://github.com/jkutner/aws-lambda-buildpack"
+keywords = [ "aws", "lambda", "javascript" ]
+
+[[licenses]]
+type = "MIT"
 
 [[stacks]]
 id = "heroku-18"
